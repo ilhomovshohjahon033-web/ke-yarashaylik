@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ke yarashamiz?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #fff0f6 0%, #ffdeeb 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: absolute;
+            top: -10%;
+            color: rgba(255, 77, 109, 0.2);
+            font-size: 20px;
+            user-select: none;
+            z-index: 0;
+            animation: float 10s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 3rem;
+            text-align: center;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px;
+            z-index: 10;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 15px 45px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: transform 0.1s;
+            font-weight: bold;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #adb5bd;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                min-height: auto;
+            }
+
+            .btn {
+                padding: 12px 40px;
+                font-size: 1.2rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Image and Text Container */
+        #media-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            z-index: 10;
+        }
+
+        #display-image {
+            max-width: 320px;
+            border: 8px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        #warning-text {
+            color: #ff0000;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 10px;
+            text-shadow: 2px 2px 0px white;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">Ke yarashamiz? 🥺💞</h1>
+
+    <div class="container">
+        <button class="btn" id="yesBtn">Ha</button>
+        <button class="btn" id="noBtn">Yoq</button>
+    </div>
+
+    <div id="media-container">
+        <img id="display-image" src="" alt="Cat Photo">
+        <div id="warning-text">Asabimni buzmange 😾</div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mediaContainer = document.getElementById('media-container');
+        const imgDisplay = document.getElementById('display-image');
+        const warningText = document.getElementById('warning-text');
+        const question = document.getElementById('question');
+        let noAttempts = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 10000);
+        }
+        setInterval(createHeart, 300);
+
+        function moveButton() {
+            noAttempts++;
+            
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+
+            if (noAttempts % 4 === 0) {
+                // Show photo and text on screen
+                imgDisplay.src = "photo1.jpg";
+                mediaContainer.style.display = "flex";
+                warningText.style.display = "block";
+                
+                // Disappear after 3.2 seconds
+                setTimeout(() => {
+                    mediaContainer.style.display = "none";
+                    warningText.style.display = "none";
+                }, 3200);
+            }
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        yesBtn.addEventListener('click', () => {
+            imgDisplay.src = "photo2.jpg";
+            question.innerText = "yeeyy!\nlove you! ❤️";
+            mediaContainer.style.display = "flex";
+            warningText.style.display = "none";
+            noBtn.style.display = "none";
+            yesBtn.style.display = "none";
+        });
+    </script>
+</body>
+</html>
